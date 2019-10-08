@@ -1,8 +1,10 @@
 package com.game.itstar.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.game.itstar.base.entity.BaseEntity;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -10,35 +12,32 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.sql.Timestamp;
-import java.util.List;
 
-@Data
+@Table(name = "admission")
 @Entity
-@Table(name = "menu")
+@Getter
+@Setter
 @DynamicInsert//新增时空字段不去插入values
 @DynamicUpdate//只跟新变化的字段,结合merge方法使用
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @EntityListeners({AuditingEntityListener.class})
-public class Menu implements BaseEntity {
+@JsonIgnoreProperties({"createdAt", "updatedAt"})
+public class Admission implements BaseEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) //主键自增
+    @GeneratedValue
     private Integer id;
-    @Column(name = "menu_name", length = 20)
-    private String menuName;
-    @Column(name = "menu_url", length = 200)
-    private String menuUrl;
-    @Column(name = "is_moudle", length = 1)
-    private Boolean isMoudle;
-    @Column(name = "parent_id", length = 11)
-    private Integer parentId;
-    @Column(name = "order_no", length = 11)
-    private Integer orderNo;
-    @Column(name = "icons", length = 200)
-    private String icons;
+    private Integer userId;
+    private Integer firmId;
+    private Integer status;
+    private Timestamp operatedAt = new Timestamp(System.currentTimeMillis());
+    private Integer operaterId;
+    private String message;
 
+    @NotBlank(message = "战队代码不能为空")
     @Transient
-    private List<Menu> children;
+    private String teamCode;
 
     @CreationTimestamp
     private Timestamp createdAt;
