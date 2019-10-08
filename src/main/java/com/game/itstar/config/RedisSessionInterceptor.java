@@ -3,6 +3,7 @@ package com.game.itstar.config;
 import com.alibaba.fastjson.JSON;
 import com.game.itstar.response.ResException;
 import com.game.itstar.response.ResStatus;
+import com.game.itstar.utile.CacheUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -26,10 +27,12 @@ public class RedisSessionInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         //无论访问的地址是不是正确的，都进行登录验证，登录成功后的访问再进行分发，404的访问自然会进入到错误控制器中
         HttpSession session = request.getSession();
-        if (session.getAttribute("loginUserId") != null) {
+        Integer userId = (Integer) session.getAttribute("loginUserId");
+        if (userId != null) {
             try {
                 //验证当前请求的session是否是已登录的session
-                String loginSessionId = redisTemplate.opsForValue().get("loginUser:" + (long) session.getAttribute("loginUserId"));
+                String key = CacheUtil.getUserKey(userId);
+                String loginSessionId = redisTemplate.opsForValue().get(key);
                 if (loginSessionId != null && loginSessionId.equals(session.getId())) {
                     return true;
                 }

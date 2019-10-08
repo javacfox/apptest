@@ -8,5 +8,5 @@ import com.game.itstar.entity.Team;
  * @Desc
  */
 public interface TeamService {
-    Integer create(Team team);
+    Team create(Team team);
 }

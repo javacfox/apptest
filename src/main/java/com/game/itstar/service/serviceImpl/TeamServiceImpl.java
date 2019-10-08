@@ -1,6 +1,7 @@
 package com.game.itstar.service.serviceImpl;
 
 import com.game.itstar.entity.Team;
+import com.game.itstar.entity.UserTeam;
 import com.game.itstar.repository.TeamRepository;
 import com.game.itstar.service.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +16,18 @@ import org.springframework.stereotype.Service;
 public class TeamServiceImpl implements TeamService {
     @Autowired
     private TeamRepository teamRepository;
+    @Autowired
+    private UserServiceImpl userService;
 
     @Override
-    public Integer create(Team team) {
-        return null;
+    public Team create(Team team) {
+        team.setCount(1);
+        teamRepository.save(team);
+
+        // 绑定关联关系
+        UserTeam userTeam = new UserTeam();
+        userTeam.setTeamId(team.getId());
+
+        return team;
     }
 }

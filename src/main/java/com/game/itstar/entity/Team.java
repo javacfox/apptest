@@ -10,6 +10,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.sql.Timestamp;
 
 /**
@@ -34,7 +36,9 @@ public class Team implements BaseEntity {
     private String teamPic;//队徽
     @Column(name = "team_code", length = 100)
     private String teamCode;//战队唯一代码,用于申请加入战队(用于邀请好友加入战队)
-    @Column(name = "count")
+    @Min(value = 0)
+    @Max(value = 10)
+    @Column(name = "count", columnDefinition = "int default 0")
     private Integer count;//战队人数
     @Column(name = "remark", length = 200)
     private String remark;//备注
