@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 public class ImageController extends BaseController {
     @Autowired
     private ImageServiceImpl imageService;
+
     /**
      * 上传图片
      *
@@ -28,7 +29,7 @@ public class ImageController extends BaseController {
     @PostMapping("/upload")
     public Object upload(MultipartHttpServletRequest request) {
         try {
-            return imageService.upload(request);
+            return ResEntity.success(imageService.upload(request));
         } catch (Exception ex) {
             return ResEntity.failed(ex);
         }

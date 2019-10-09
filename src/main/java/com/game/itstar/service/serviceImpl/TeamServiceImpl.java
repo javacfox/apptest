@@ -16,6 +16,7 @@ import com.game.itstar.utile.Helpers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
@@ -80,6 +81,7 @@ public class TeamServiceImpl implements TeamService {
      * @param type 1-不需要审核 2-需要审核
      * @return
      */
+    @Transactional
     public Team createQRcode(Team team, Integer type, HttpServletResponse response) {
         BufferedImage qRImageWithLogo = null;
         try {
@@ -140,7 +142,7 @@ public class TeamServiceImpl implements TeamService {
             e.printStackTrace();
             throw new ResException("生成二维码失败 => " + e.getMessage());
         }
-       return commonRepository.merge(team);
+        return commonRepository.merge(team);
     }
 
 }

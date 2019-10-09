@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @Author 朱斌
@@ -28,7 +29,27 @@ public class TeamController {
      */
     @PostMapping("")
     public Object create(@RequestBody Team team, HttpServletRequest request) {
-        return ResEntity.success(teamService.create(team, request));
+        try {
+            return ResEntity.success(teamService.create(team, request));
+        } catch (Exception ex) {
+            return ResEntity.failed(ex);
+        }
+    }
+
+    /**
+     * 生成二维码
+     *
+     * @param team
+     * @param type 1-不需要审核 2-需要审核
+     * @return
+     */
+    @PutMapping("/QRcode")
+    public Object createQRcode(@RequestBody Team team, Integer type, HttpServletResponse response) {
+        try {
+            return ResEntity.success(teamService.createQRcode(team, type, response));
+        } catch (Exception ex) {
+            return ResEntity.failed(ex);
+        }
     }
 
 }
