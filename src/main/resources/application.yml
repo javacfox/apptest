@@ -56,6 +56,9 @@ redis_key:
 # 默认角色权限ID
 DEFAULT_MENUId: 1, 2, 3, 4
 
+# 图片上传位置
+file:
+  save-path: /usr/share/itstar/files
 
 
 

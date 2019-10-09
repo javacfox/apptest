@@ -4,10 +4,9 @@ import com.game.itstar.entity.Team;
 import com.game.itstar.response.ResEntity;
 import com.game.itstar.service.serviceImpl.TeamServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @Author 朱斌
@@ -20,9 +19,16 @@ public class TeamController {
     @Autowired
     private TeamServiceImpl teamService;
 
+    /**
+     * 创建新战队
+     *
+     * @param team
+     * @param request
+     * @return
+     */
     @PostMapping("")
-    public Object create(@RequestBody Team team){
-        return ResEntity.success(teamService.create(team));
+    public Object create(@RequestBody Team team, HttpServletRequest request) {
+        return ResEntity.success(teamService.create(team, request));
     }
 
 }

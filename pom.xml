@@ -125,12 +125,25 @@
 
         <!--二维码-->
         <!--https://mvnrepository.com/artifact/QRCode/QRCode-->
-        <dependency>
-            <groupId>QRCode</groupId>
-            <artifactId>QRCode</artifactId>
-            <version>1.0.0</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>QRCode</groupId>-->
+            <!--<artifactId>QRCode</artifactId>-->
+            <!--<version>1.0.0</version>-->
+        <!--</dependency>-->
 
+        <!--引入生成二维码的依赖-->
+        <!-- https://mvnrepository.com/artifact/com.google.zxing/core -->
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>core</artifactId>
+            <version>3.3.0</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.google.zxing/javase -->
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>javase</artifactId>
+            <version>3.3.0</version>
+        </dependency>
     </dependencies>
 
     <build>

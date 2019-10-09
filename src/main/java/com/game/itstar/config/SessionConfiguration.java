@@ -1,8 +1,10 @@
 package com.game.itstar.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 
@@ -13,8 +15,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 @Configuration
 public class SessionConfiguration implements WebMvcConfigurer {
-//    @Autowired
+    //    @Autowired
 //    LoginInterceptor loginInterceptor;
+    @Value("${file.save-path}")
+    private String baseFilePath;
 
     /**
      * 不需要登录拦截的url:登录注册和验证码
@@ -73,4 +77,8 @@ public class SessionConfiguration implements WebMvcConfigurer {
                 .excludePathPatterns("/api/auth/logout");
     }
 
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/api/static/files/**").addResourceLocations("file:" + baseFilePath + "/");
+    }
 }

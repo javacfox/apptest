@@ -47,4 +47,6 @@ public class Team implements BaseEntity {
     private Timestamp createdAt;
     @UpdateTimestamp
     private Timestamp updatedAt;
+    @Transient
+    private Boolean isEffective;//是否调用服务器图片
 }
