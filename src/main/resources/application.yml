@@ -63,11 +63,6 @@ server:
   tomcat:
      uri-encoding: utf-8
 
-redis_key:
-  sms_code: base:sms_code:$mobile #二期短信验证
-  user:
-    expiration: 900 #单位秒 15分钟
-
 # 默认角色权限ID
 DEFAULT_MENUId: 1, 2, 3, 4
 
@@ -78,7 +73,7 @@ file:
 redis_key:
   sms_code: itstar:sms_code:$sender #接收人邮箱
   user:
-    expiration: 7800
+    expiration: 900 #单位秒 15分钟
 
 
 
