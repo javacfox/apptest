@@ -112,6 +112,33 @@ public class UserController extends BaseController {
         }
     }
 
+    /**
+     * 通过邮箱重置密码
+     *
+     * @param m
+     * @return
+     */
+    @PutMapping("/change-password")
+    public Object changePassword(@Validated @RequestBody Map<String, String> m, HttpServletResponse response) {
+        try {
+            Validator validator = Validator.create()
+                    .notEmpty("密码", m.get("getPassword"))
+                    .notEmpty("确认密码",  m.get("getPassword1"))
+                    .notEmpty("验证码",  m.get("code"))
+                    .email(m.get("email"));
 
+            if (!validator.valid()) {
+                response.setStatus(ResStatus.BAD_REQUEST.getCode());
+                return ResEntity.failed(new ResException(validator.getMessage()), ResStatus.BAD_REQUEST);
+            }
+            if (emailService.checkSMSCode(m.get("email"), m.get("code"))) {
+                return ResEntity.success(userService.changePassword(m));
+            }
+            return ResEntity.failed(new ResException("验证码错误"), ResStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            response.setStatus(ResStatus.FAILED.getCode());
+            return ResEntity.failed(e);
+        }
+    }
 
 }

@@ -1,6 +1,8 @@
 package com.game.itstar.service.serviceImpl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.game.itstar.base.repository.CommonRepository;
+import com.game.itstar.base.util.PageBean;
 import com.game.itstar.entity.*;
 import com.game.itstar.enums.RegisterType;
 import com.game.itstar.repository.*;
@@ -18,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -44,6 +47,8 @@ public class UserServiceImpl implements UserService {
     private RoleRepository roleRepository;
     @Autowired
     private RoleMenuRepository roleMenuRepository;
+    @Autowired
+    private CommonRepository commonRepository;
     @Value("${DEFAULT_MENUId}")
     private String defaultMenuId;
     @Autowired
@@ -132,6 +137,43 @@ public class UserServiceImpl implements UserService {
         // 菜单
         List<Menu> menuList = menuService.getMenu(user.getId());
         return menuList;
+    }
+
+    /**
+     * 修改密码
+     *
+     * @param m
+     * @return
+     */
+    @Override
+    @Transactional
+    public String changePassword(Map<String, String> m) {
+        // 通过邮箱找已经绑定的用户
+        User user = userRepository.findByEmail(m.get("email"));
+        if (user == null) {
+            throw new ResException("该邮箱尚未注册,不能使用该邮箱找回密码!");
+        }
+
+        // 修改密码步骤
+        String password = Helpers.isEmptyString(user.getPassword()) ? AttributeUtil.PASSWORD : user.getPassword();
+        String password1 = Helpers.isEmptyString(user.getPassword1()) ? AttributeUtil.PASSWORD : user.getPassword1();
+        byte[] salt = MD5ShaUtil.generateSalt(AttributeUtil.SALT_SIZE);
+        byte[] hashPassword = MD5ShaUtil.sha1(password.getBytes(), salt, AttributeUtil.HASH_INTERATIONS);
+        byte[] hashPassword1 = MD5ShaUtil.sha1(password1.getBytes(), salt, AttributeUtil.HASH_INTERATIONS);
+        password = Encodes.encodeHex(hashPassword);
+        password1 = Encodes.encodeHex(hashPassword1);
+        if (!password.equals(password1)) {
+            throw new ResException("登录密码和确认密不一致!");
+        }
+
+        user.setPassword(password);
+        user.setPassword1(password1);
+        user.setSalt(Encodes.encodeHex(salt));
+        user.setActive(true);
+        commonRepository.merge(user);
+        setRoleMenu(user.getId(), user.getType());
+
+        return "修改密码成功!";
     }
 
     /**
