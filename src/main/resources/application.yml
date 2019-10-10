@@ -43,6 +43,21 @@ spring:
   session:
    store-type: redis
 
+  mail:
+    host: smtp.exmail.qq.com
+    port: 465
+    protocol: smtp
+    username: ********  //你的邮箱账号
+    password: ********  //你的登陆密码
+    default-encoding: UTF-8
+    properties:
+      mail:
+            smtp:
+              auth: true
+              starttls:
+                enable: true
+                required: true
+
 server:
   port: 9001 # 端口
   tomcat:
@@ -60,7 +75,10 @@ DEFAULT_MENUId: 1, 2, 3, 4
 file:
   save-path: /usr/share/itstar/files
 
-
+redis_key:
+  sms_code: itstar:sms_code:$sender #接收人邮箱
+  user:
+    expiration: 7800
 
 
 

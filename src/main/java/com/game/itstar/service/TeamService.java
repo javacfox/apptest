@@ -1,5 +1,6 @@
 package com.game.itstar.service;
 
+import com.game.itstar.base.util.PageBean;
 import com.game.itstar.entity.Team;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,5 +11,7 @@ import javax.servlet.http.HttpServletRequest;
  * @Desc
  */
 public interface TeamService {
-    Team create(Team team,HttpServletRequest request);
+    Team create(Team team, HttpServletRequest request);
+
+    Team findOne(Integer id);
 }

@@ -9,4 +9,5 @@ import org.springframework.data.repository.CrudRepository;
  * @Desc 用户战队关联关系
  */
 public interface UserTeamRepository extends CrudRepository<UserTeam, Integer> {
+//    Int findByUserId(Integer id);
 }

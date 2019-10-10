@@ -59,4 +59,6 @@ public class User implements BaseEntity {
     private Boolean isEffective = false;//是否调用服务器图片,默认否
     @Transient
     private Integer type;//注册类型1-普通用户 2-管理员
+    @Transient
+    private String code;//验证码
 }

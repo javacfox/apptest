@@ -7,6 +7,7 @@ import com.game.itstar.repository.*;
 import com.game.itstar.response.ResException;
 import com.game.itstar.service.UserService;
 import com.game.itstar.utile.*;
+import org.apache.commons.lang3.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -66,6 +67,12 @@ public class UserServiceImpl implements UserService {
         Integer count1 = userRepository.countByUserName(user.getUserName());
         if (count1 > 0) {
             throw new ResException("该用户名已经被使用,请重新输入!");
+        }
+
+        // 判断邮箱是否已经注册
+        Integer count2 = userRepository.countByEmail(user.getEmail());
+        if (count2 > 0) {
+            throw new ResException("该邮箱已经被注册,请重核对!");
         }
 
         // 注册步骤
@@ -229,4 +236,6 @@ public class UserServiceImpl implements UserService {
             }
         }
     }
+
+
 }

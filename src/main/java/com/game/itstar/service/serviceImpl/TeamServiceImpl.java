@@ -75,6 +75,18 @@ public class TeamServiceImpl implements TeamService {
     }
 
     /**
+     * 查找一条
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public Team findOne(Integer id) {
+//        userTeamRepository.findByUserId(id);
+        return teamRepository.getById(id);
+    }
+
+    /**
      * 生成二维码
      *
      * @param team

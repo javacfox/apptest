@@ -52,4 +52,14 @@ public class TeamController {
         }
     }
 
+    /**
+     * 查找一条
+     *
+     * @param id
+     * @return
+     */
+    @GetMapping("/{id}")
+    public Object findOne(@PathVariable Integer id) {
+        return ResEntity.success(teamService.findOne(id));
+    }
 }
