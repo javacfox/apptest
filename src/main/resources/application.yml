@@ -47,8 +47,8 @@ spring:
     host: smtp.exmail.qq.com
     port: 465
     protocol: smtp
-    username:   #你的邮箱账号
-    password:   #你的登陆密码
+    username: "7zVGxDmDDNVc/tyFkkYiXw==" #你的邮箱账号
+    password: "RkvQ6k9QAFS85iUt3DmepQ=="  #你的登陆密码
     default-encoding: UTF-8
     properties:
       mail:

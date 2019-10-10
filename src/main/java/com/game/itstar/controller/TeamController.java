@@ -43,7 +43,7 @@ public class TeamController {
      * @param type 1-不需要审核 2-需要审核
      * @return
      */
-    @PutMapping("/QRcode")
+    @PutMapping("/qrcode")
     public Object createQRcode(@RequestBody Team team, Integer type, HttpServletResponse response) {
         try {
             return ResEntity.success(teamService.createQRcode(team, type, response));

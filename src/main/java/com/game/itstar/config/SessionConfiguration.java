@@ -74,6 +74,8 @@ public class SessionConfiguration implements WebMvcConfigurer {
         registry.addInterceptor(getSessionInterceptor()).addPathPatterns("/api/**")
                 .excludePathPatterns("/api/auth/login")
                 .excludePathPatterns("/api/auth/register")
+                .excludePathPatterns("/api/auth/send_code")
+                .excludePathPatterns("/api/auth/change-password")
                 .excludePathPatterns("/api/auth/logout");
     }
 

@@ -1,6 +1,8 @@
 package com.game.itstar.service.serviceImpl;
 
 import com.game.itstar.service.EmailService;
+import com.game.itstar.utile.EncryptUtil;
+import com.game.itstar.utile.Helpers;
 import com.game.itstar.utile.RandCodeUtil;
 import com.sun.mail.util.MailSSLSocketFactory;
 import org.slf4j.Logger;
@@ -70,10 +72,16 @@ public class EmailServiceImpl implements EmailService {
         properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
         properties.put("mail.smtp.socketFactory.fallback", "false");
         properties.put("mail.smtp.socketFactory.port", port);
+
+        // 解密
+        String pid1 = EncryptUtil.decrypt(password);
+        String from1 = EncryptUtil.decrypt(from);
+        Helpers.requireNonNull("账号和密码错误", pid1);
+
         Session session = Session.getDefaultInstance(properties, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(from, password);
+                return new PasswordAuthentication(from1, pid1);
             }
         });
         // 使用SSL,企业邮箱必需 end
