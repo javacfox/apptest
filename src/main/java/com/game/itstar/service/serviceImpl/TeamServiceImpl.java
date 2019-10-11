@@ -13,6 +13,7 @@ import com.game.itstar.service.TeamService;
 import com.game.itstar.utile.ConstantProperties;
 import com.game.itstar.utile.DateExtendUtil;
 import com.game.itstar.utile.Helpers;
+import com.game.itstar.utile.RandCodeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -57,15 +58,18 @@ public class TeamServiceImpl implements TeamService {
     @Override
     public Team create(Team team, HttpServletRequest request) {
         team.setCount(1);
+
+        // 1.生成随机的加入战队的邀请码
+//        inviteIdCode(team);
         teamRepository.save(team);
 
-        // 1.从session中回去用户信息
+        // 2.从session中回去用户信息
         User user = userService.getAuthUser(request);
         if (user == null) {
             throw new ResException("该用户还未登录,请先登录!");
         }
 
-        // 2.绑定关联关系
+        // 3.绑定关联关系
         UserTeam userTeam = new UserTeam();
         userTeam.setTeamId(team.getId());
         userTeam.setUserId(user.getId());
@@ -93,68 +97,99 @@ public class TeamServiceImpl implements TeamService {
      * @param type 1-不需要审核 2-需要审核
      * @return
      */
+//    @Transactional
+//    public Team createQRcode(Team team, Integer type, HttpServletResponse response) {
+//        BufferedImage qRImageWithLogo = null;
+//        try {
+//            String logoPath = null;
+//
+//            // 是否调用服务器图片
+//            if (Helpers.isNotNullAndEmpty(team.getTeamPic())) {
+//                // logo图片地址
+//                logoPath = baseFilePath + "/" + team.getTeamPic();
+//                team.setIsEffective(new File(logoPath).exists());
+//            } else {
+//                team.setIsEffective(false);
+//            }
+//
+//            // 不需要审核
+//            if (type.equals(ConstantProperties.NO_VALIDATION_REQUIRED)) {
+//                String contents = "欢迎加入" + team.getTeamName() + "战队";
+//                qRImageWithLogo = QrCodeUtils.createImage(contents, logoPath, true);
+//
+//            } else if (type.equals(ConstantProperties.VALIDATION_REQUIRED)) {//需要审核
+//                String contents = "欢迎加入" + team.getTeamName() + "战队, " + "请耐心等候审核!";
+//                qRImageWithLogo = QrCodeUtils.createImage(contents, logoPath, true);
+//            }
+//
+//            // 把二维码图片上传到临时文件夹
+//            String uploadPath = team.getTeamName();
+//
+//            //文件路径不存在,则新建
+//            String checkPath = baseFilePath + "/" + uploadPath;
+//            File fileStream = new File(checkPath);
+//            if (!fileStream.exists()) {
+//                fileStream.mkdirs();
+//            }
+//
+//            if (qRImageWithLogo == null) {
+//                throw new ResException("上传二维码不能为空");
+//            }
+//            String relatedPath = "/" + qRImageWithLogo;
+//            String realPath = uploadPath + relatedPath;
+//
+//            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//            ImageIO.write(qRImageWithLogo, "jpg", baos);
+//
+//            byte[] QRJPG = baos.toByteArray();
+//            response.setHeader("Cache-Control", "no-store");
+//            response.setHeader("Pragma", "no-cache");
+//            response.setDateHeader("Expires", 0);
+//            response.setContentType("image/jpeg");
+//
+//            ServletOutputStream os = response.getOutputStream();
+//            os.write(QRJPG); // 自此完成一套，图片读入，写入流，转为字节数组，写入输出流
+//            os.flush();
+//            os.close();
+//            baos.close();
+//
+//            team.setTeamCode(realPath);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            throw new ResException("生成二维码失败 => " + e.getMessage());
+//        }
+//        return commonRepository.merge(team);
+//    }
+
+    /**
+     * 战队邀请码
+     *
+     * @param
+     */
     @Transactional
-    public Team createQRcode(Team team, Integer type, HttpServletResponse response) {
-        BufferedImage qRImageWithLogo = null;
-        try {
-            String logoPath = null;
-
-            // 是否调用服务器图片
-            if (Helpers.isNotNullAndEmpty(team.getTeamPic())) {
-                // logo图片地址
-                logoPath = baseFilePath + "/" + team.getTeamPic();
-                team.setIsEffective(new File(logoPath).exists());
-            } else {
-                team.setIsEffective(false);
-            }
-
-            // 不需要审核
-            if (type.equals(ConstantProperties.NO_VALIDATION_REQUIRED)) {
-                String contents = "欢迎加入" + team.getTeamName() + "战队";
-                qRImageWithLogo = QrCodeUtils.createImage(contents, logoPath, true);
-
-            } else if (type.equals(ConstantProperties.VALIDATION_REQUIRED)) {//需要审核
-                String contents = "欢迎加入" + team.getTeamName() + "战队, " + "请耐心等候审核!";
-                qRImageWithLogo = QrCodeUtils.createImage(contents, logoPath, true);
-            }
-
-            // 把二维码图片上传到临时文件夹
-            String uploadPath = team.getTeamName();
-
-            //文件路径不存在,则新建
-            String checkPath = baseFilePath + "/" + uploadPath;
-            File fileStream = new File(checkPath);
-            if (!fileStream.exists()) {
-                fileStream.mkdirs();
-            }
-
-            if (qRImageWithLogo == null) {
-                throw new ResException("上传二维码不能为空");
-            }
-            String relatedPath = "/" + qRImageWithLogo;
-            String realPath = uploadPath + relatedPath;
-
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write(qRImageWithLogo, "jpg", baos);
-
-            byte[] QRJPG = baos.toByteArray();
-            response.setHeader("Cache-Control", "no-store");
-            response.setHeader("Pragma", "no-cache");
-            response.setDateHeader("Expires", 0);
-            response.setContentType("image/jpeg");
-
-            ServletOutputStream os = response.getOutputStream();
-            os.write(QRJPG); // 自此完成一套，图片读入，写入流，转为字节数组，写入输出流
-            os.flush();
-            os.close();
-            baos.close();
-
-            team.setTeamCode(realPath);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new ResException("生成二维码失败 => " + e.getMessage());
+    public void inviteIdCode(Integer id, Integer type) {
+        Team team = teamRepository.getById(id);
+        if (team == null) {
+            throw new ResException("该战队不存在!");
         }
-        return commonRepository.merge(team);
+
+        String code = null;
+        // 不需要审核
+        if (type.equals(ConstantProperties.NO_VALIDATION_REQUIRED)) {
+            code = RandCodeUtil.getRandomString(ConstantProperties.TEAM_CODE_LENGTH);
+
+        } else if (type.equals(ConstantProperties.VALIDATION_REQUIRED)) {//需要审核
+            code = ConstantProperties.TEAM_AUDIT_CODE_AGO
+                    + RandCodeUtil.getRandomString(ConstantProperties.TEAM_AUDIT_CODE_LENGTH);
+        }
+        if (!teamRepository.existsByTeamCode(code)) {
+            team.setTeamCode(code);
+            commonRepository.merge(team);
+            return;
+        }
+
+        throw new ResException("服务器繁忙,请稍后重试!");
     }
+
 
 }

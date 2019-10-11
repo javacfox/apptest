@@ -43,14 +43,14 @@ public class TeamController {
      * @param type 1-不需要审核 2-需要审核
      * @return
      */
-    @PutMapping("/qrcode")
-    public Object createQRcode(@RequestBody Team team, Integer type, HttpServletResponse response) {
-        try {
-            return ResEntity.success(teamService.createQRcode(team, type, response));
-        } catch (Exception ex) {
-            return ResEntity.failed(ex);
-        }
-    }
+//    @PutMapping("/qrcode")
+//    public Object createQRcode(@RequestBody Team team, Integer type, HttpServletResponse response) {
+//        try {
+//            return ResEntity.success(teamService.createQRcode(team, type, response));
+//        } catch (Exception ex) {
+//            return ResEntity.failed(ex);
+//        }
+//    }
 
     /**
      * 查找一条
@@ -61,5 +61,21 @@ public class TeamController {
     @GetMapping("/{id}")
     public Object findOne(@PathVariable Integer id) {
         return ResEntity.success(teamService.findOne(id));
+    }
+
+    /**
+     * 生成二维码
+     *
+     * @param id
+     * @param type 1-不需要审核 2-需要审核
+     * @return
+     */
+    @PutMapping("/code/{id}")
+    public void createCode(@PathVariable Integer id, Integer type) {
+        try {
+            teamService.inviteIdCode(id, type);
+        } catch (Exception ex) {
+            ResEntity.failed(ex);
+        }
     }
 }

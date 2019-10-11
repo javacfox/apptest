@@ -10,4 +10,7 @@ import org.springframework.data.repository.CrudRepository;
  */
 public interface TeamRepository extends CrudRepository<Team, Integer> {
     Team getById(Integer id);
+
+    boolean existsByTeamCode(String code);
+
 }

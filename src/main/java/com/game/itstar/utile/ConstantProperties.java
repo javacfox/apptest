@@ -41,5 +41,17 @@ public class ConstantProperties {
      */
     public static final Integer VALIDATION_REQUIRED = 2;
 
+    /**
+     * 申请加入战队邀请码长度-- 不需要审核
+     */
+    public static final int TEAM_CODE_LENGTH = 20;
+
+
+    /**
+     * 申请加入战队邀请码长度-- 需要审核
+     */
+    public static final int TEAM_AUDIT_CODE_LENGTH = 15;
+
+    public static final String TEAM_AUDIT_CODE_AGO = "udit";
 
 }
