@@ -1,7 +1,10 @@
 package com.game.itstar.repository;
 
 import com.game.itstar.entity.Team;
+import com.game.itstar.entity.User;
 import org.springframework.data.repository.CrudRepository;
+
+import java.util.List;
 
 /**
  * @Author 朱斌
@@ -13,4 +16,7 @@ public interface TeamRepository extends CrudRepository<Team, Integer> {
 
     boolean existsByTeamCode(String code);
 
+    Team findByTeamCode(String code);
+
+    List<Team> findAllByIdIn(List<Integer> teamIds);
 }

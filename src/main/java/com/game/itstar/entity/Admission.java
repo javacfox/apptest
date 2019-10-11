@@ -29,13 +29,13 @@ public class Admission implements BaseEntity {
     @GeneratedValue
     private Integer id;
     private Integer userId;
-    private Integer firmId;
     private Integer status;
+    private Integer teamId;//战队id
     private Timestamp operatedAt = new Timestamp(System.currentTimeMillis());
     private Integer operaterId;
     private String message;
 
-    @NotBlank(message = "战队代码不能为空")
+    @NotBlank(message = "战队邀请码不能为空")
     @Transient
     private String teamCode;
 

@@ -52,6 +52,6 @@ public class ConstantProperties {
      */
     public static final int TEAM_AUDIT_CODE_LENGTH = 15;
 
-    public static final String TEAM_AUDIT_CODE_AGO = "udit";
+    public static final String TEAM_AUDIT_CODE_AGO = "audit";
 
 }
