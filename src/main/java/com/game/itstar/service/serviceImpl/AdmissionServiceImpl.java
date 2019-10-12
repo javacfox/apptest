@@ -81,6 +81,7 @@ public class AdmissionServiceImpl implements AdmissionService {
      * @return
      */
     @Override
+    @Transactional
     public Admission applyTeam(Admission admission, HttpServletRequest request) {
         Team team = teamRepository.findByTeamCode(admission.getTeamCode());
 
@@ -118,6 +119,10 @@ public class AdmissionServiceImpl implements AdmissionService {
             admission.setUserId(user.getId());
             admissionRepository.save(admission);
 
+            // 战队人数加1
+            team.setCount(team.getCount() + 1);
+            commonRepository.merge(team);
+
             // 建立用户与战队关联关系
             UserTeam userTeam = new UserTeam();
             userTeam.setType(TeamType.PLAYERS.getValue());
@@ -129,6 +134,14 @@ public class AdmissionServiceImpl implements AdmissionService {
         return admission;
     }
 
+    /**
+     * 审核申请加入战队
+     *
+     * @param id
+     * @param admission
+     * @param request
+     * @return
+     */
     @Override
     @Transactional
     public Admission auditTeam(Integer id, Admission admission, HttpServletRequest request) {
@@ -150,10 +163,18 @@ public class AdmissionServiceImpl implements AdmissionService {
             admission.setTeamCode("!");// 不能为空
 
         } else {
+            Team team = teamRepository.findByTeamCode(admission.getTeamCode());
+            if (team == null) {
+                throw new ResException("该战队不存在");
+            }
+
             admission.setStatus(ApplyStatusType.THROUGH.getValue());
             admission.setMessage("申请通过!");
             admission.setTeamCode("!");//不能为空
-            //添加日志
+
+            // 战队人数加1
+            team.setCount(team.getCount() + 1);
+            commonRepository.merge(team);
         }
         commonRepository.merge(admission);
 

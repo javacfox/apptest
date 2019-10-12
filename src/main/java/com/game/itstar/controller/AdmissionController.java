@@ -11,6 +11,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * 作者：朱斌
@@ -61,4 +63,5 @@ public class AdmissionController extends BaseController {
     public Object audit(@PathVariable Integer id, @RequestBody Admission admission,HttpServletRequest request) {
         return ResEntity.success(admissionService.auditTeam(id, admission,request));
     }
+
 }

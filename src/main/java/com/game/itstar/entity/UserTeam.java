@@ -31,4 +31,6 @@ public class UserTeam implements BaseEntity {
     private Integer teamId;
     @Column(name = "type", columnDefinition = "int default 0")
     private Integer type;// 0-普通队员 1-队长
+
+
 }

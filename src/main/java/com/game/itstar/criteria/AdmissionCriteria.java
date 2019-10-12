@@ -9,7 +9,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 public class AdmissionCriteria extends BaseCriteria implements Serializable {
-    private Integer firmId;
+    private Integer teamId;
     private Integer status;
     private Integer userId;
     private Integer flag;
@@ -19,9 +19,9 @@ public class AdmissionCriteria extends BaseCriteria implements Serializable {
         values.clear();
         StringBuilder condition = new StringBuilder();
 
-        if (this.firmId != null) {
-            condition.append(" and firmId = :firmId");
-            values.put("firmId", this.firmId);
+        if (this.teamId != null) {
+            condition.append(" and teamId = :teamId");
+            values.put("teamId", this.teamId);
         }
         if (this.status != null) {
             condition.append(" and status = :status");

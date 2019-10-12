@@ -1,5 +1,6 @@
 package com.game.itstar.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.game.itstar.base.entity.BaseEntity;
 import lombok.Data;
@@ -20,6 +21,7 @@ import java.util.List;
 @DynamicUpdate//只跟新变化的字段,结合merge方法使用
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @EntityListeners({AuditingEntityListener.class})
+@JsonIgnoreProperties({"createdAt", "updatedAt"})
 public class Menu implements BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) //主键自增
