@@ -96,6 +96,13 @@ public class UserServiceImpl implements UserService {
         user.setPassword1(password1);
         user.setSalt(Encodes.encodeHex(salt));
         user.setActive(true);
+        if (user.getType().equals(ConstantProperties.DEFAULT_ROLECODE)) {// 普通用户
+            user.setUserType(RegisterType.USER.getValue());
+        } else if (user.getType().equals(ConstantProperties.ADMIN_ROLECODE)) { //管理员
+            user.setUserType(RegisterType.ADMIN.getValue());
+        } else {// 超级管理员
+            user.setUserType(RegisterType.SUPER_ADMIN.getValue());
+        }
         userRepository.save(user);
         setRoleMenu(user.getId(), user.getType());
 

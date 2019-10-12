@@ -7,7 +7,7 @@ package com.game.itstar.utile;
  */
 public class ConstantProperties {
     /**
-     * 默认角色
+     * 默认角色 --注册时前端传的数值
      */
     public static final Integer DEFAULT_ROLECODE = 0;
 
@@ -27,7 +27,7 @@ public class ConstantProperties {
     public static final String SUPER_ADMIN_ROLECODE = "SuperAdmin";
 
     /**
-     * 管理员类型
+     * 管理员 --注册时前端传的数值
      */
     public static final Integer ADMIN_ROLECODE = 1;
 

@@ -16,7 +16,7 @@ import java.sql.Timestamp;
 /**
  * @Author 朱斌
  * @Date 2019/10/12  10:32
- * @Desc 报名
+ * @Desc 比赛报名赛程
  */
 
 @Table(name = "apply")
@@ -32,7 +32,7 @@ public class Apply implements BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY) //主键自增
     private Integer id;
     @Column(name = "status", length = 1)
-    private Integer status;//报名状态 默0-是预报名 1-正在报名中 2-报名结束
+    private Integer status;//报名状态 默认 0 - 预报名 1 - 正在报名中 2 - 报名结束
     @Column(name = "begin_at")
     private Timestamp beginAt;//开始时间
     @Column(name = "end_at")

@@ -46,7 +46,7 @@ public class User implements BaseEntity {
     @Column(name = "active")
     private Boolean active;
     @Column(name = "user_type", columnDefinition = "int default 0")
-    private Integer userType;//99超级管理员
+    private Integer userType;// 99 - 超级管理员 0 - 普通用户 1 - 管理员
     @Pattern(regexp = RegexpProperties.EMAIL_PATTERN, message = "邮箱格式有误")
     @Column(name = "email", length = 50)
     private String email;
@@ -60,9 +60,9 @@ public class User implements BaseEntity {
     @Transient
     private String password1;
     @Transient
-    private Boolean isEffective = false;//是否调用服务器图片,默认否
+    private Boolean isEffective = false;// 是否调用服务器图片,默认否
     @Transient
-    private Integer type;//注册类型1-普通用户 2-管理员
+    private Integer type;// 注册时前端传的类型数值: 1-普通用2-管理员
     @Transient
-    private String code;//验证码
+    private String code;// 验证码
 }
