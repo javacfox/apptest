@@ -1,5 +1,7 @@
 package com.game.itstar.service;
 
+import com.game.itstar.base.util.PageBean;
+import com.game.itstar.criteria.GameCriteria;
 import com.game.itstar.entity.Game;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,4 +13,6 @@ import javax.servlet.http.HttpServletRequest;
  */
 public interface GameService {
     Game create(Game game, HttpServletRequest request);
+
+    void findByPage(PageBean pageBean, GameCriteria gameCriteria);
 }

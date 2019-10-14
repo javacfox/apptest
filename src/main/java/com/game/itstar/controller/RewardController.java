@@ -23,6 +23,13 @@ public class RewardController extends BaseController {
     @Autowired
     private RewardServiceImpl rewardService;
 
+    /**
+     * 新增奖励
+     *
+     * @param reward
+     * @param request
+     * @return
+     */
     @PostMapping("")
     public Object create(@RequestBody Reward reward, HttpServletRequest request) {
         try {

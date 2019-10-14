@@ -23,6 +23,13 @@ public class ApplyController extends BaseController {
     @Autowired
     private ApplyServiceImpl applyService;
 
+    /**
+     * 新增报名
+     *
+     * @param apply
+     * @param request
+     * @return
+     */
     @PostMapping("")
     private Object create(@RequestBody Apply apply, HttpServletRequest request) {
         try {
