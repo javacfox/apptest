@@ -30,10 +30,8 @@ public class Reward implements BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) //主键自增
     private Integer id;
-    @Column(name = "name", length = 30)
-    private String name;//奖励名次
-    @Column(name = "count", length = 1)
-    private Integer count;// 名次奖励次数 冠军1名
+    @Column(name = "remark", length = 100)
+    private String remark;//奖励说明
     @Column(name = "game_id")
     private Integer gameId;//比赛id
 
