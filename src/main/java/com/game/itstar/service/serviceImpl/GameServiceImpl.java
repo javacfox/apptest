@@ -9,14 +9,12 @@ import com.game.itstar.enums.RegisterType;
 import com.game.itstar.repository.GameRepository;
 import com.game.itstar.response.ResException;
 import com.game.itstar.service.GameService;
+import com.game.itstar.utile.DateExtendUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @Author 朱斌
@@ -72,12 +70,15 @@ public class GameServiceImpl implements GameService {
         gameList.stream().forEach(x -> {
             Map<String, Object> map = new HashMap<>();
 
+            Date begin = x == null ? null : x.getBeginAt();
+            Date beginAt = DateExtendUtil.dateToDate(begin, DateExtendUtil.TIME_NO_SECOND);
+
             map.put("id", x == null ? null : x.getId());//比赛id
             map.put("name", x == null ? null : x.getName());//比赛名字
             map.put("type", x == null ? null : x.getType());//比赛类型 1-和平精英 2-王者荣耀 3-英雄联盟
             map.put("division", x == null ? null : x.getDivision());// 赛区 1-QQ赛区 2-微信赛区
             map.put("model", x == null ? null : x.getModel());// 比赛模式 1-战队模式 2-个人模式
-            map.put("beginAt", x == null ? null : x.getBeginAt());//开赛时间
+            map.put("beginAt", beginAt);//开赛时间
 
             maps.add(map);
         });

@@ -15,6 +15,8 @@ import java.util.Date;
 public class DateExtendUtil{
     public static final String YEAR_BEGIN = "-01-01 00:00:00";
     public static final String YEAR_END = "-12-31 23:59:59";
+    public static final String YEAR_NO_YEAR = "MM-dd";
+    public static final String TIME_NO_SECOND = "HH:mm";
     public static final long ONE_DAY = 24 * 60 * 60 * 1000L;
 
 
@@ -38,6 +40,29 @@ public class DateExtendUtil{
             } catch (ParseException var5) {
                 date = null;
                 var5.printStackTrace();
+            }
+        }
+
+        return date;
+    }
+
+
+    /**
+     * 日期格式化成日期
+     *
+     * @param date   日期
+     * @param format 格式化
+     * @return 日期
+     */
+    public static Date dateToDate(Date date, String format) {
+        if (format != null && !"".equals(format)) {
+            SimpleDateFormat sdf = new SimpleDateFormat(format);
+            try {
+                String strDate = sdf.format(date);
+                date = sdf.parse(strDate);
+            } catch (ParseException e) {
+                date = null;
+                e.printStackTrace();
             }
         }
 
