@@ -126,6 +126,8 @@ public class GameServiceImpl implements GameService {
     }
 
     /**
+     * 比赛详情
+     *
      * @param id
      * @return
      */
@@ -161,7 +163,7 @@ public class GameServiceImpl implements GameService {
         map.put("apply", endAt);// 报名截止时间
 
         JSONObject json = JSON.parseObject(reward.getRemark());
-        map.put("reward", json);
+        map.put("reward", json); // 奖励
 
         return map;
     }
