@@ -16,6 +16,7 @@ public class DateExtendUtil{
     public static final String YEAR_BEGIN = "-01-01 00:00:00";
     public static final String YEAR_END = "-12-31 23:59:59";
     public static final String YEAR_NO_YEAR = "MM-dd";
+    public static final String YEAR = "yyyy-MM-dd";
     public static final String TIME_NO_SECOND = "HH:mm";
     public static final long ONE_DAY = 24 * 60 * 60 * 1000L;
 
