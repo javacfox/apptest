@@ -14,4 +14,6 @@ import java.util.List;
 public interface ApplyRepository extends CrudRepository<Apply, Integer> {
     @Query("select  a.gameId from Apply a where a.status =:status")
     List<Integer> findByStatus(Integer status);
+
+    Apply getByGameId(Integer gameId);
 }

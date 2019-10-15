@@ -12,4 +12,6 @@ import java.util.List;
  */
 public interface RewardRepository extends CrudRepository<Reward, Integer> {
     List<Reward> findByGameIdIn(List<Integer> gameIds);
+
+    Reward getByGameId(Integer id);
 }

@@ -9,4 +9,5 @@ import org.springframework.data.repository.CrudRepository;
  * @Desc 比赛
  */
 public interface GameRepository extends CrudRepository<Game, Integer> {
+    Game getById(Integer id);
 }

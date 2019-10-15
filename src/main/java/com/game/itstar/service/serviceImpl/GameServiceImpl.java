@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.game.itstar.base.repository.CommonRepository;
 import com.game.itstar.base.util.PageBean;
 import com.game.itstar.criteria.GameCriteria;
+import com.game.itstar.entity.Apply;
 import com.game.itstar.entity.Game;
 import com.game.itstar.entity.Reward;
 import com.game.itstar.entity.User;
@@ -20,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.sql.Timestamp;
 import java.util.*;
 
 /**
@@ -101,7 +103,8 @@ public class GameServiceImpl implements GameService {
 
             // 时间处理,只取时分 HH:mm
             Date begin = x == null ? null : x.getBeginAt();
-            Date beginAt = DateExtendUtil.dateToDate(begin, DateExtendUtil.TIME_NO_SECOND);
+            String now = DateExtendUtil.dateToString(begin, DateExtendUtil.TIME_NO_SECOND);
+            Timestamp beginAt = Timestamp.valueOf(now); // 转换成时间戳
 
             map.put("id", x == null ? null : x.getId());//比赛id
             map.put("name", x == null ? null : x.getName());//比赛名字
@@ -110,16 +113,57 @@ public class GameServiceImpl implements GameService {
             map.put("model", x == null ? null : x.getModel());// 比赛模式 1-战队模式 2-个人模式
             map.put("beginAt", beginAt);//开赛时间
 
-            // todo 奖励
+            // 奖励
             JSONObject json = JSON.parseObject(reward == null ? null : reward.getRemark());
             String firstMoney = json.getString("firstMoney");
-            map.put("firstMoney", firstMoney);//开赛时间
+            map.put("firstMoney", firstMoney);// 奖金,最高的奖金数
             maps.add(map);
         });
 
         //使用抽取的集合作为分页数据
         pageBean.setData(null);//先清除
         pageBean.setData(maps);
+    }
+
+    /**
+     * @param id
+     * @return
+     */
+    @Override
+    public Map<String, Object> findOne(Integer id) {
+        Map<String, Object> map = new HashMap<>();
+        Game game = gameRepository.getById(id);
+        if (game == null) {
+            return map;
+        }
+
+        Apply apply = applyRepository.getByGameId(id);
+        if (apply == null) {
+            return map;
+        }
+
+        Reward reward = rewardRepository.getByGameId(id);
+        if (reward == null) {
+            return map;
+        }
+
+        // 时间处理,只取时分 HH:mm
+        Date begin = game.getBeginAt();
+        String now = DateExtendUtil.dateToString(begin, DateExtendUtil.TIME_NO_SECOND);
+        Timestamp beginAt = Timestamp.valueOf(now); // 转换成时间戳 -- 比赛开始时间
+
+        game.setBeginAt(beginAt);
+        map.put("game", game);// 比赛相关详情
+
+        Date endAt1 = apply.getEndAt(); // 报名结束时间
+        String endAt2 = DateExtendUtil.dateToString(endAt1, DateExtendUtil.TIME_NO_SECOND);
+        Timestamp endAt = Timestamp.valueOf(endAt2); // 转换成时间戳
+        map.put("apply", endAt);// 报名截止时间
+
+        JSONObject json = JSON.parseObject(reward.getRemark());
+        map.put("reward", json);
+
+        return map;
     }
 
 

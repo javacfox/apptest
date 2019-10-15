@@ -5,6 +5,7 @@ import com.game.itstar.criteria.GameCriteria;
 import com.game.itstar.entity.Game;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 /**
  * @Author 朱斌
@@ -15,4 +16,6 @@ public interface GameService {
     Game create(Game game, HttpServletRequest request);
 
     void findByPage(PageBean pageBean, GameCriteria gameCriteria);
+
+    Map<String,Object> findOne(Integer id);
 }
